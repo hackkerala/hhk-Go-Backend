@@ -10,7 +10,6 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) {
 		c.Send("Hello World")
 	})
-	api.api()
-
+	api(app)
 	app.Listen(3000)
 }

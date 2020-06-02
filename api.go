@@ -1,9 +1,8 @@
-package api
+package main
 
 import "github.com/gofiber/fiber"
 
-func api() {
-	app := fiber.New()
+func api(app *fiber.App) {
 
 	api := app.Group("/api", func(c *fiber.Ctx) {
 		c.Set("X-Custom-Header", "isafgiwegfuiqwgfivfberik")
@@ -19,5 +18,10 @@ func api() {
 				"message": "Hello There new user",
 			})
 		}
+	})
+	api.Get("/list", func(c *fiber.Ctx) {
+		c.JSON(fiber.Map{
+			"Name": "User 1",
+		})
 	})
 }
