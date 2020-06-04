@@ -1,6 +1,11 @@
 package main
 
-import "github.com/gofiber/fiber"
+import (
+	"github.com/dgrijalva/jwt-go"
+
+  "github.com/gofiber/fiber"
+  "github.com/gofiber/jwt" // jwtware
+)
 
 func api(app *fiber.App) {
 
@@ -8,6 +13,9 @@ func api(app *fiber.App) {
 		c.Set("X-Custom-Header", "isafgiwegfuiqwgfivfberik")
 		c.Next()
 	})
+	app.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte("secret"),
+	  }))
 	api.Post("/new", func(c *fiber.Ctx) {
 		if c.Body() == "" {
 			c.JSON(fiber.Map{
@@ -24,4 +32,7 @@ func api(app *fiber.App) {
 			"Name": "User 1",
 		})
 	})
+	func login(c *fiber.Ctx){
+		user:=c.Formvak
+	}
 }

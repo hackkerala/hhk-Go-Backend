@@ -2,4 +2,10 @@ module github.com/athul/anonblog
 
 go 1.14
 
-require github.com/gofiber/fiber v1.10.3
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gofiber/fiber v1.10.5
+	github.com/gofiber/jwt v0.1.0
+	github.com/jinzhu/gorm v1.9.12
+	github.com/klauspost/compress v1.10.7 // indirect
+)
