@@ -1,46 +1,39 @@
 package main
 
 import (
-	"fmt"
-	"os/user"
+	"net/http"
 
 	"github.com/athul/anonblog/db"
 	"github.com/athul/anonblog/users"
-	"github.com/gofiber/fiber" // jwtware
-	"github.com/jinzhu/gorm"
+	"github.com/gin-gonic/gin" // jwtware
 )
 
-func initDatabase() {
-	var err error
-	db.DBConn, err = gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		panic("failed to connect database")
-	}
-	fmt.Println("Connection Opened to Database")
-	db.DBConn.AutoMigrate(&user.User{})
-	fmt.Println("Database Migrated")
-}
 func main() {
-	app := fiber.New()
+	// app := fiber.New()
+	r := gin.Default()
+	db.ConnectDB()
 
-	initDatabase()
+	setupRoutes(r)
+	// app.Listen(3000)
 
-	app.Get("/", func(c *fiber.Ctx) {
-		c.Send("Hello World")
-	})
-	setupRoutes(app)
-	app.Listen(3000)
+	r.Run()
 }
-func setupRoutes(app *fiber.App) {
-	api := app.Group("/api", func(c *fiber.Ctx) {
-		c.Set("X-Custom-Header", "isafgiwegfuiqwgfivfberik")
-		c.Next()
-	})
+func setupRoutes(r *gin.Engine) {
+	// api := app.Group("/api", func(c *fiber.Ctx) {
+	// 	c.Set("X-Custom-Header", "isafgiwegfuiqwgfivfberik")
+	// 	c.Next()
+	// })
+
 	// api.Use(jwtware.New(jwtware.Config{
 	// 	SigningKey: []byte("secret"),
 	// }))
-	api.Post("/new", createNew)
-	api.Get("/list", list)
-	api.Post("/login", users.Newuser)
+	// r.POST("/new", createNew)
+	// r.GET("/list", list)
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "hello world"})
+	})
+	r.POST("/login", users.Newuser)
+	r.GET("/users.all", users.GetUsers)
+	r.GET("/users/:id", users.FindBook)
 
 }
