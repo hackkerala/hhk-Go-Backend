@@ -11,19 +11,19 @@ import (
 )
 
 func Newuser(c *gin.Context) {
-	db := db.DBConn
-	var input = new(User)
-
+	dbc := db.DBConn
+	var input = new(db.User)
+	//c.BindJSON(input)
 	if err := c.ShouldBindJSON(input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// nuser := User{Name: input.Name, Email: input.Email}
+	//nuser := db.User{Name: input.Name, Email: input.Email}
 
-	ll := db.FirstOrCreate(&input)
+	dbc.Create(&input)
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
-	log.Println(ll)
+	//log.Println(ll.Value)
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = input.Name
@@ -41,16 +41,16 @@ func Newuser(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"token": t, "user": input})
 }
 func GetUsers(c *gin.Context) {
-	db := db.DBConn
+	dbc := db.DBConn
 
-	defer db.Close()
+	defer dbc.Close()
 
-	var users []User
-	db.Find(&users)
+	var users []db.User
+	dbc.Find(&users)
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
 func FindBook(c *gin.Context) { // Get model if exist
-	var user User
+	var user db.User
 	db := db.DBConn
 	if err := db.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})

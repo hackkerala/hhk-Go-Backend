@@ -1,4 +1,4 @@
-package users
+package db
 
 import (
 	"github.com/jinzhu/gorm"
@@ -11,6 +11,7 @@ type User struct {
 	Name  string `json:"name" binding:"required"`
 	Email string `json:"email" binding:"required"`
 }
+
 type NewUser struct {
 	Name  string `json:"name" binding:"required"`
 	Email string `json:"email" binding:"required"`
