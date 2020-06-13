@@ -34,6 +34,6 @@ func setupRoutes(r *gin.Engine) {
 	})
 	r.POST("/login", users.Newuser)
 	r.GET("/users.all", users.GetUsers)
-	r.GET("/users/:id", users.FindBook)
+	r.GET("/users/:id", users.FindUserbyID)
 
 }

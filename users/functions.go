@@ -19,7 +19,10 @@ func Newuser(c *gin.Context) {
 		return
 	}
 	//nuser := db.User{Name: input.Name, Email: input.Email}
-
+	if input.Emailval() == false {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please enter a valid email address"})
+		return
+	}
 	dbc.Create(&input)
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -49,7 +52,8 @@ func GetUsers(c *gin.Context) {
 	dbc.Find(&users)
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
-func FindBook(c *gin.Context) { // Get model if exist
+
+func FindUserbyID(c *gin.Context) { // Get model if exist
 	var user db.User
 	db := db.DBConn
 	if err := db.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {

@@ -1,8 +1,12 @@
 package db
 
 import (
+	"regexp"
+
 	"github.com/jinzhu/gorm"
 )
+
+var rxEmail = regexp.MustCompile(".+@.+\\..+")
 
 //User type for anonymous user
 type User struct {
@@ -12,16 +16,12 @@ type User struct {
 	Email string `json:"email" binding:"required"`
 }
 
-type NewUser struct {
-	Name  string `json:"name" binding:"required"`
-	Email string `json:"email" binding:"required"`
-}
+func (u *User) Emailval() bool {
 
-// Article type
-type Article struct {
-	gorm.Model
+	match := rxEmail.Match([]byte(u.Email))
 
-	Author User   `json:"author"`
-	Title  string `json:"title"`
-	Body   string `json:"body"`
+	if match == false {
+		return false
+	}
+	return true
 }
