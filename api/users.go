@@ -1,12 +1,9 @@
-package users
+package api
 
 import (
-	"log"
 	"net/http"
-	"time"
 
 	"github.com/athul/anonblog/db"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,24 +21,7 @@ func Newuser(c *gin.Context) {
 		return
 	}
 	dbc.Create(&input)
-	// Create token
-	token := jwt.New(jwt.SigningMethodHS256)
-	//log.Println(ll.Value)
-	// Set claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = input.Name
-	log.Println(input.Name)
-	claims["admin"] = true
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("secret"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusCreated, gin.H{"token": t, "user": input})
+	c.JSON(http.StatusCreated, gin.H{"id": input.ID, "name": input.Name, "email": input.Email})
 }
 func GetUsers(c *gin.Context) {
 	dbc := db.DBConn
