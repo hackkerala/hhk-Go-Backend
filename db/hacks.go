@@ -9,13 +9,13 @@ import (
 type Hackathon struct {
 	gorm.Model
 
-	Name       string   `json:"name"`
-	Organizers []string `json:"organizers"`
-	Place      string   `json:"place"`
-	Date       string   `json:"date"`
-	URL        string   `json:"url"`
-	Phone      string   `json:"phone"`
-	Email      string   `json:"email"`
+	Name       string `json:"name"`
+	Organizers []User `json:"organizers"`
+	Place      string `json:"place"`
+	Date       string `json:"date"`
+	URL        string `json:"url"`
+	Phone      string `json:"phone"`
+	Email      string `json:"email"`
 }
 
 var phoneReg = regexp.MustCompile("^((\\+91|91|0)[\\- ]{0,1})?[456789]\\d{9}$")
