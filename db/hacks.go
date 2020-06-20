@@ -10,7 +10,7 @@ type Hackathon struct {
 	gorm.Model
 
 	Name       string `json:"name"`
-	Organizers []User `json:"organizers"`
+	Organizers User   `json:"organizers"`
 	Place      string `json:"place"`
 	Date       string `json:"date"`
 	URL        string `json:"url"`

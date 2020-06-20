@@ -3,8 +3,8 @@ package main
 import (
 	"net/http"
 
+	"github.com/athul/anonblog/api"
 	"github.com/athul/anonblog/db"
-	"github.com/athul/anonblog/users"
 	"github.com/gin-gonic/gin" // jwtware
 )
 
@@ -32,8 +32,10 @@ func setupRoutes(r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"data": "hello world"})
 	})
-	r.POST("/login", users.Newuser)
-	r.GET("/users.all", users.GetUsers)
-	r.GET("/users/:id", users.FindUserbyID)
+	r.POST("/login", api.Newuser)
+	r.GET("/users.all", api.GetUsers)
+	r.GET("/users/:id", api.FindUserbyID)
+	r.POST("/hack.new", api.Newhack)
+	r.GET("/hacks.all", api.GetHacks)
 
 }
