@@ -17,6 +17,6 @@ func ConnectDB() {
 	}
 	fmt.Println("Connection Opened to Database")
 
-	DBConn.AutoMigrate(&User{})
+	DBConn.AutoMigrate(&User{}, &Hackathon{})
 	fmt.Println("Database Migrated")
 }
